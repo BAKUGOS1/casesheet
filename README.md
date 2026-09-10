@@ -9,6 +9,31 @@ and a little plain browser JavaScript. No React, no Tailwind, no Bootstrap, no C
 no build step, no Node. No models, no database, no external services — every screen
 renders from fixed demo content in `frontend/demo_data.py`. English only.
 
+## What it looks like
+
+**The patient says where it hurts** — a labelled body map beside a picture grid, for a
+patient who may not read well.
+
+![Chief complaint screen](docs/screenshots/04-chief-complaint.png)
+
+**The interview listens, and escalates** — every question can be spoken or tapped, and a
+red-flag answer pages triage before the patient has left the kiosk.
+
+![Interview with a red flag](docs/screenshots/06-interview-red-flag.png)
+
+**The physician gets a draft, not a diagnosis** — structured history, scanned documents and
+out-of-range values, to accept, amend or reject.
+
+![Clinician history summary](docs/screenshots/13-clinician-summary.png)
+
+**Accessibility is not a settings page** — high contrast and three text sizes are in the
+header of every kiosk screen.
+
+![High contrast mode](docs/screenshots/18-high-contrast.png)
+
+All 19 screenshots are in [`docs/screenshots/`](docs/screenshots), numbered in the order a
+patient walks through them.
+
 ## Run it
 
 ```bash
