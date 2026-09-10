@@ -1,0 +1,39 @@
+{% extends "kiosk/_base.html" %}
+
+{% block title %}Welcome · {{ product_name }}{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Patient case-taking</p>
+      <h1>Tell us what brings you here today.</h1>
+      <p class="hero__lead">
+        Speak, or tap the pictures. Four minutes, and your doctor has your history before you sit down.
+      </p>
+
+      <div class="hero__cta">
+        <a class="btn btn--primary btn--lg" href="{% url 'identify' %}">
+          Touch here to begin
+          <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+        </a>
+      </div>
+    </div>
+
+    <aside class="steps-card">
+      <ol>
+        <li><span class="n">1</span><span>Identify yourself</span></li>
+        <li><span class="n">2</span><span>Answer a few questions</span></li>
+        <li><span class="n">3</span><span>Scan your old papers</span></li>
+        <li><span class="n">4</span><span>Check the summary</span></li>
+      </ol>
+    </aside>
+  </section>
+
+  <nav class="quicklinks" aria-label="Other views">
+    <a href="{% url 'clinician_queue' %}">Clinician workspace</a>
+    <a href="{% url 'portal_login' %}">My health record</a>
+    <a href="{% url 'screens' %}">All screens</a>
+  </nav>
+</div>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "clinician/_base.html" %}
+
+{% block title %}{{ patient.name }} · {{ product_name }}{% endblock %}
+{% block page_title %}History summary{% endblock %}
+{% block page_meta %}Token {{ patient.token }} · confirmed by the patient{% endblock %}
+
+{% block console %}
+<div class="alertbar" role="alert">
+  <svg class="icon icon--lg" aria-hidden="true"><use href="#i-alert"></use></svg>
+  <div>
+    <strong>{{ red_flag.title }}</strong>
+    <p>{{ red_flag.detail }}</p>
+  </div>
+</div>
+
+<div class="record__head">
+  <div>
+    <p class="record__name">{{ patient.name }}</p>
+    <p class="record__meta">{{ patient.age }} · {{ patient.sex }} · ABHA {{ patient.abha }}</p>
+    <div class="tags" style="margin-top:.6rem">
+      <span class="badge badge--red">Allergy: sulphonamides</span>
+      <span class="badge badge--amber">Hypertension, 6 years</span>
+    </div>
+  </div>
+  <div class="record__actions">
+    <button type="button" class="btn">Amend</button>
+    <button type="button" class="btn">Reject</button>
+    <button type="button" class="btn btn--primary">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-check"></use></svg> Accept
+    </button>
+  </div>
+</div>
+
+<div class="record">
+  <div>
+    <div class="vitals">
+      {% for vital in vitals %}
+        <div class="vital {% if vital.abnormal %}is-abnormal{% endif %}">
+          <p class="vital__label">{{ vital.label }}</p>
+          <p class="vital__value">{{ vital.value }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% for section in sections %}
+      <section class="rec">
+        <div class="rec__head">
+          <p class="rec__title">{{ section.title }}</p>
+          <div class="tags">
+            {% if section.alert %}<span class="badge badge--red">{{ section.alert }}</span>{% endif %}
+            {% if section.confidence != "high" %}<span class="badge badge--amber">Verify</span>{% endif %}
+            <button type="button" class="btn btn--quiet" aria-label="Edit {{ section.title }}">
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-edit"></use></svg>
+            </button>
+          </div>
+        </div>
+        <div class="rec__body">
+          <ul class="rec__lines">
+            {% for line in section.lines %}<li><span>{{ line }}</span></li>{% endfor %}
+          </ul>
+        </div>
+      </section>
+    {% endfor %}
+  </div>
+
+  <aside>
+    <div class="side-card">
+      <div class="side-card__head">
+        <span>Documents</span>
+        <span class="badge">{{ documents|length }}</span>
+      </div>
+      <div class="side-card__body">
+        {% for document in documents %}
+          <div class="minidoc">
+            <span class="minidoc__icon"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-{{ document.icon }}"></use></svg></span>
+            <div style="flex:1">
+              <p class="minidoc__title">{{ document.title }}</p>
+              <p class="minidoc__meta">{{ document.source }} · {{ document.date }}</p>
+              {% for field in document.extracted %}
+                {% if field.abnormal %}
+                  <p class="flagline">{{ field.label }} {{ field.value }}, normal {{ field.range }}</p>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-card__head"><span>Timeline</span></div>
+      <div class="side-card__body">
+        <ul class="timeline">
+          {% for entry in timeline %}
+            <li class="{% if entry.current %}is-current{% endif %} {% if entry.abnormal %}is-abnormal{% endif %}">
+              <span class="timeline__date">{{ entry.date }}</span>
+              <span class="timeline__label">{{ entry.label }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </aside>
+</div>
+{% endblock %}

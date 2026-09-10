@@ -1,0 +1,218 @@
+/* ==========================================================================
+   CaseSheet — clinician workspace
+   Dense and scannable: the physician has about two minutes per patient.
+   ========================================================================== */
+
+body.workspace { background: var(--canvas); }
+
+.console {
+  display: grid;
+  grid-template-columns: 15.5rem 1fr;
+  min-height: 100vh;
+}
+@media (max-width: 900px) { .console { grid-template-columns: 1fr; } }
+
+/* --- sidebar -------------------------------------------------------------- */
+
+.console__side {
+  background: var(--green-900);
+  color: #e6f1eb;
+  padding: 1.25rem 1rem;
+  display: flex; flex-direction: column; gap: 1.5rem;
+}
+html[data-contrast="high"] .console__side { background: #000; border-right: 2px solid #fff; }
+
+.console__side .brand__text strong { color: #fff; }
+.console__side .brand__text .muted { color: #a9c6b8; }
+.console__side .brand__mark { background: rgba(255, 255, 255, .12); }
+
+.side-nav { display: grid; gap: .2rem; }
+.side-nav a {
+  display: flex; align-items: center; gap: .7rem;
+  padding: .65rem .8rem; border-radius: 10px;
+  text-decoration: none; color: #cfe3d9; font-weight: 600; font-size: .95rem;
+}
+.side-nav a:hover { background: rgba(255, 255, 255, .08); color: #fff; }
+.side-nav a.is-active { background: rgba(255, 255, 255, .16); color: #fff; }
+
+.side-foot { margin-top: auto; font-size: .82rem; color: #a9c6b8; }
+.side-foot a { color: #cfe3d9; }
+
+/* --- top bar -------------------------------------------------------------- */
+
+.console__main { min-width: 0; display: flex; flex-direction: column; }
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 1.25rem;
+  padding: .9rem 1.5rem;
+  background: var(--surface); border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.topbar h1 { font-size: 1.2rem; }
+.topbar__meta { font-size: .85rem; color: var(--ink-500); }
+
+.searchbox {
+  display: flex; align-items: center; gap: .55rem;
+  padding: .5rem .85rem; min-width: 18rem;
+  border: 1.5px solid var(--line); border-radius: 999px; background: var(--surface-sunk);
+}
+.searchbox input { border: none; background: none; outline: none; flex: 1; font: inherit; }
+
+.who { display: flex; align-items: center; gap: .65rem; }
+.who__avatar {
+  display: grid; place-items: center; width: 2.4rem; height: 2.4rem;
+  border-radius: 50%; background: var(--green-100); color: var(--green-800); font-weight: 700;
+}
+
+.console__body { padding: 1.5rem; display: grid; gap: 1.25rem; }
+
+/* --- stats ---------------------------------------------------------------- */
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem 1.15rem; }
+.stat__value { font-size: 1.9rem; font-weight: 700; letter-spacing: -.03em; }
+.stat__label { font-size: .8rem; font-weight: 650; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-500); }
+.stat__note { font-size: .84rem; color: var(--ink-500); margin-top: .2rem; }
+
+/* --- queue table ---------------------------------------------------------- */
+
+.tablecard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.tablecard__head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.tablewrap { overflow-x: auto; }
+
+.qtable { min-width: 60rem; }
+.qtable th {
+  text-align: left; font-size: .74rem; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--ink-500); font-weight: 700; padding: .7rem 1.25rem; border-bottom: 1px solid var(--line);
+  background: var(--surface-sunk);
+}
+.qtable td { padding: .85rem 1.25rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.qtable tbody tr:hover { background: var(--green-050); }
+.qtable tbody tr.is-red { background: var(--red-100); }
+.qtable tbody tr.is-red:hover { background: #f7dada; }
+
+.token-chip {
+  display: inline-grid; place-items: center; min-width: 4rem;
+  padding: .3rem .6rem; border-radius: 8px;
+  background: var(--green-100); color: var(--green-800);
+  font-weight: 750; letter-spacing: .02em; white-space: nowrap;
+}
+tr.is-red .token-chip { background: var(--red-500); color: #fff; }
+html[data-contrast="high"] tr.is-red .token-chip { background: #000; color: var(--red-500); border: 1.5px solid var(--red-500); }
+
+.pname { font-weight: 650; }
+.pmeta { font-size: .84rem; color: var(--ink-500); }
+.flagline { display: flex; align-items: center; gap: .4rem; color: var(--red-700); font-size: .84rem; font-weight: 650; margin-top: .25rem; }
+
+/* --- patient record ------------------------------------------------------- */
+
+.record { display: grid; grid-template-columns: 1fr 21rem; gap: 1.25rem; align-items: start; }
+@media (max-width: 1100px) { .record { grid-template-columns: 1fr; } }
+
+.record__head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 1.25rem;
+  padding: 1.25rem; background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); flex-wrap: wrap;
+}
+.record__name { font-size: 1.45rem; font-weight: 700; letter-spacing: -.02em; }
+.record__meta { color: var(--ink-500); margin-top: .2rem; }
+.record__actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+
+.alertbar {
+  display: flex; gap: .9rem; align-items: flex-start;
+  padding: 1rem 1.15rem;
+  border: 2px solid var(--red-500); border-left-width: 8px;
+  background: var(--red-100); border-radius: var(--radius); color: var(--red-700);
+}
+.alertbar p { color: var(--ink-700); font-size: .92rem; margin-top: .2rem; }
+
+.vitals { display: grid; grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr)); gap: .6rem; }
+.vital { padding: .7rem .85rem; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.vital.is-abnormal { border-color: #f0c4c4; background: var(--red-100); color: var(--red-700); }
+.vital__label { font-size: .74rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-500); }
+.vital.is-abnormal .vital__label { color: var(--red-700); }
+.vital__value { font-size: 1.25rem; font-weight: 700; }
+.vital__unit { font-size: .8rem; color: var(--ink-500); }
+
+/* Structured history sections, physician view. */
+.rec { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.rec + .rec { margin-top: .85rem; }
+.rec__head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .7rem 1.1rem; background: var(--surface-sunk); border-bottom: 1px solid var(--line); }
+.rec__title { font-weight: 650; font-size: .98rem; }
+.rec__body { padding: .9rem 1.1rem; }
+.rec__lines { display: grid; gap: .35rem; font-size: .95rem; }
+.rec__lines li { display: flex; gap: .55rem; }
+.rec__lines li::before { content: "•"; color: var(--ink-300); }
+.rec__foot { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; padding: .55rem 1.1rem; border-top: 1px dashed var(--line); font-size: .82rem; color: var(--ink-500); }
+.rec__foot .btn { padding: .28rem .7rem; font-size: .8rem; }
+
+.side-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.side-card + .side-card { margin-top: 1rem; }
+.side-card__head { padding: .8rem 1.1rem; border-bottom: 1px solid var(--line); font-weight: 650; display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+.side-card__body { padding: 1rem 1.1rem; }
+
+.minidoc { display: flex; gap: .7rem; align-items: flex-start; padding: .6rem 0; }
+.minidoc + .minidoc { border-top: 1px dashed var(--line); }
+.minidoc__icon { display: grid; place-items: center; width: 2.1rem; height: 2.1rem; border-radius: 8px; background: var(--green-100); color: var(--green-800); flex: none; }
+.minidoc__title { font-weight: 620; font-size: .92rem; }
+.minidoc__meta { font-size: .8rem; color: var(--ink-500); }
+
+
+/* --- patient portal ------------------------------------------------------- */
+
+body.portal { background: var(--canvas); }
+
+.portal-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 1.25rem;
+  padding: .9rem 1.6rem; background: var(--surface); border-bottom: 1px solid var(--line); flex-wrap: wrap;
+}
+.portal-nav { display: flex; gap: .3rem; flex-wrap: wrap; }
+.portal-nav a { padding: .5rem .9rem; border-radius: 999px; text-decoration: none; font-weight: 600; color: var(--ink-700); }
+.portal-nav a:hover { background: var(--surface-sunk); }
+.portal-nav a.is-active { background: var(--green-100); color: var(--green-800); }
+
+.portal-wrap { width: min(1080px, 100%); margin: 0 auto; padding: 2rem 1.6rem 3rem; }
+.portal-title {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+}
+.portal-title h1 { font-size: 1.7rem; }
+.portal-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.25rem; align-items: start; }
+@media (max-width: 900px) { .portal-grid { grid-template-columns: 1fr; } }
+
+.visit { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding: 1rem 0; }
+.visit + .visit { border-top: 1px dashed var(--line); }
+.visit__date { font-weight: 650; font-size: .9rem; color: var(--ink-500); }
+.visit__place { font-weight: 620; }
+.visit__summary { color: var(--ink-700); font-size: .93rem; margin-top: .2rem; }
+.visit.is-current .visit__place { color: var(--green-800); }
+
+.login-shell { min-height: 100vh; display: grid; place-items: center; padding: 2rem; }
+.login-card {
+  width: min(460px, 100%); background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow); padding: 2rem;
+}
+.field { display: grid; gap: .35rem; margin-top: 1rem; }
+.field label { font-weight: 650; font-size: .9rem; }
+.field input {
+  padding: .8rem .95rem; border: 1.5px solid var(--line-strong); border-radius: 10px;
+  font: inherit; background: var(--surface); color: var(--ink-900);
+}
+.field input:focus { border-color: var(--green-700); outline: none; box-shadow: 0 0 0 3px var(--green-100); }
+.otp { display: flex; gap: .5rem; }
+.otp input { width: 3rem; text-align: center; font-size: 1.3rem; font-weight: 700; }
+.divider { display: flex; align-items: center; gap: .8rem; margin: 1.4rem 0; color: var(--ink-300); font-size: .82rem; }
+.divider::before, .divider::after { content: ""; height: 1px; background: var(--line); flex: 1; }
+
+/* --- screen index --------------------------------------------------------- */
+
+.index-wrap { width: min(1080px, 100%); margin: 0 auto; padding: 2.5rem 1.6rem 4rem; }
+.index-group { margin-top: 2.25rem; }
+.index-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: .85rem; margin-top: 1rem; }
+.index-item {
+  display: block; padding: 1rem 1.15rem; background: var(--surface);
+  border: 1px solid var(--line); border-radius: var(--radius); text-decoration: none;
+}
+.index-item:hover { border-color: var(--green-700); box-shadow: var(--shadow-sm); }
+.index-item strong { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+.index-item span { color: var(--ink-500); font-size: .89rem; display: block; margin-top: .3rem; }

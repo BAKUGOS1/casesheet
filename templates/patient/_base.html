@@ -1,0 +1,30 @@
+{% extends "base.html" %}{% load static %}
+
+{% block body_class %}portal{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/clinician.css' %}">{% endblock %}
+
+{% block chrome %}
+<header class="portal-head">
+  <a class="brand" href="{% url 'portal_dashboard' %}">
+    <span class="brand__mark" aria-hidden="true">
+      <svg class="icon icon--lg"><use href="#i-user"></use></svg>
+    </span>
+    <span class="brand__text">
+      <strong>{{ product_name }}</strong>
+      <span class="muted">My health record</span>
+    </span>
+  </a>
+
+  <nav class="portal-nav" aria-label="Sections">
+    <a href="{% url 'portal_dashboard' %}" class="{% if active_nav == 'dashboard' %}is-active{% endif %}">Overview</a>
+    <a href="{% url 'portal_records' %}" class="{% if active_nav == 'records' %}is-active{% endif %}">Documents</a>
+    <a href="{% url 'welcome' %}">Kiosk</a>
+  </nav>
+
+  <div class="who">
+    <span class="who__avatar">RK</span>
+    <strong style="font-size:.92rem">{{ patient.name }}</strong>
+  </div>
+</header>
+{% endblock %}

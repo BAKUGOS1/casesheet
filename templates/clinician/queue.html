@@ -1,0 +1,89 @@
+{% extends "clinician/_base.html" %}
+
+{% block title %}OPD queue · {{ product_name }}{% endblock %}
+{% block page_title %}OPD queue{% endblock %}
+{% block page_meta %}Thursday, 10 September 2026{% endblock %}
+
+{% block topbar_tools %}
+<form class="searchbox" method="get" action="{% url 'clinician_queue' %}" role="search">
+  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-search"></use></svg>
+  <label class="visually-hidden" for="q">Search the queue</label>
+  <input id="q" name="q" value="{{ query }}" placeholder="Search name or complaint">
+</form>
+{% endblock %}
+
+{% block console %}
+<section class="stats">
+  {% for stat in stats %}
+    <div class="stat">
+      <p class="stat__label">{{ stat.label }}</p>
+      <p class="stat__value">{{ stat.value }}</p>
+    </div>
+  {% endfor %}
+</section>
+
+<section class="tablecard">
+  <div class="tablecard__head">
+    <p style="font-weight:650">Waiting</p>
+    <p class="topbar__meta">Red first, not arrival order.</p>
+  </div>
+
+  <div class="tablewrap">
+    <table class="qtable">
+      <thead>
+        <tr>
+          <th scope="col">Token</th>
+          <th scope="col">Patient</th>
+          <th scope="col">Complaint</th>
+          <th scope="col">Waiting</th>
+          <th scope="col">Intake</th>
+          <th scope="col"><span class="visually-hidden">Open</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in queue %}
+          <tr class="{% if row.priority == 'red' %}is-red{% endif %}">
+            <td><span class="token-chip">{{ row.token }}</span></td>
+            <td>
+              <div class="pname">{{ row.name }}</div>
+              <div class="pmeta">{{ row.age }} · {{ row.sex }}</div>
+            </td>
+            <td>
+              <div>{{ row.complaint }}</div>
+              {% if row.flag %}
+                <div class="flagline">
+                  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-alert"></use></svg>
+                  {{ row.flag }}
+                </div>
+              {% endif %}
+            </td>
+            <td>{{ row.waited }}</td>
+            <td>
+              <div class="tags">
+                {% if row.status == "Ready" %}
+                  <span class="badge badge--green">Ready</span>
+                {% else %}
+                  <span class="badge">{{ row.status }}</span>
+                {% endif %}
+                {% if row.docs %}
+                  <span class="badge">
+                    <svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-text"></use></svg>
+                    {{ row.docs }}
+                  </span>
+                {% endif %}
+              </div>
+            </td>
+            <td style="text-align:right">
+              <a class="btn" href="{% url 'clinician_patient' %}">
+                Open <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+              </a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6" class="muted" style="padding:2rem; text-align:center">No match for “{{ query }}”.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

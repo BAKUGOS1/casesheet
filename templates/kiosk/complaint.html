@@ -1,0 +1,73 @@
+{% extends "kiosk/_base.html" %}
+
+{% block title %}Your problem · {{ product_name }}{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="page-head">
+    <h1>Where is the problem?</h1>
+    <p class="page-head__hint">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-mic"></use></svg>
+      Touch the body, or pick a picture. You can also just say it.
+    </p>
+  </div>
+
+  <div class="pick">
+    <div class="bodymap">
+      <svg viewBox="0 0 320 250" role="img"
+           aria-label="Body map. Touch a part of the body to say where the problem is.">
+        <g class="bodymap__figure" fill="none" stroke="currentColor" stroke-width="2.6"
+           stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="160" cy="35" r="21"/>
+          <path d="M160 56v9"/>
+          <path d="M130 73c0-5 4-8 9-8h42c5 0 9 3 9 8v60c0 8-2 12-4 17l-5 13h-42l-5-13c-2-5-4-9-4-17z"/>
+          <path d="M130 75 108 87l-7 46-4 26"/>
+          <path d="M190 75l22 12 7 46 4 26"/>
+          <path d="M144 163l-4 40-3 42"/>
+          <path d="M176 163l4 40 3 42"/>
+        </g>
+
+        <g class="bodymap__leader">
+          <path d="M132 35H96"/><path d="M128 95H96"/><path d="M128 137H96"/>
+          <path d="M238 127h14"/><path d="M203 209h35"/>
+        </g>
+        <g class="bodymap__label">
+          <text x="88" y="40" text-anchor="end">Head</text>
+          <text x="88" y="100" text-anchor="end">Chest</text>
+          <text x="88" y="142" text-anchor="end">Stomach</text>
+          <text x="258" y="132">Arm</text>
+          <text x="244" y="214">Leg</text>
+        </g>
+
+        {% for region in regions %}
+          <circle class="bodymap__hot" cx="{{ region.cx }}" cy="{{ region.cy }}" r="20"
+                  data-region="{{ region.label }}" tabindex="0" role="button">
+            <title>{{ region.label }}</title>
+          </circle>
+        {% endfor %}
+        <circle class="bodymap__pin" cx="160" cy="95" r="6"/>
+      </svg>
+      <p class="bodymap__caption" data-region-caption>Chest</p>
+    </div>
+
+    <div class="tiles tiles--3" data-choice-group>
+      {% for item in complaints %}
+        <button type="button" class="tile tile--stack {% if item.slug == selected %}is-selected{% endif %}"
+                data-choice="{{ item.label }}">
+          <span class="tile__icon"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-{{ item.icon }}"></use></svg></span>
+          <span class="tile__title">{{ item.label }}</span>
+        </button>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="actions">
+    <a class="btn" href="{% url 'consent' %}">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-left"></use></svg> Back
+    </a>
+    <a class="btn btn--primary btn--lg" href="{% url 'interview' %}?step=1">
+      Continue <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+    </a>
+  </div>
+</div>
+{% endblock %}

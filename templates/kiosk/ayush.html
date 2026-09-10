@@ -1,0 +1,66 @@
+{% extends "kiosk/_base.html" %}
+
+{% block title %}Dashavidha Pariksha · {{ product_name }}{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="page-head">
+    <h1>Ten questions about your body</h1>
+    <p class="page-head__hint">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-sparkle"></use></svg>
+      Dashavidha Pariksha, for the Ayurveda OPD. About ninety seconds.
+    </p>
+  </div>
+
+  <div class="pick">
+    <ul class="paramlist">
+      {% for parameter in parameters %}
+        <li>
+          <a class="param {% if parameter.slug == active %}is-active{% endif %}" href="?p={{ parameter.slug }}">
+            <span class="param__dot" aria-hidden="true">
+              {% if forloop.counter0 < 4 %}
+                <svg class="icon icon--sm"><use href="#i-check"></use></svg>
+              {% else %}{{ forloop.counter }}{% endif %}
+            </span>
+            <span class="param__name">
+              {{ parameter.name }}
+              <span class="param__gloss">{{ parameter.gloss }}</span>
+            </span>
+            <span class="badge">{{ parameter.answer }}</span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div>
+      {% for parameter in parameters %}
+        {% if parameter.slug == active %}
+          <section class="ask__question">
+            <div class="ask__probe">
+              <span class="badge badge--ai">{{ parameter.name }}</span>
+            </div>
+            <p class="ask__q">{{ parameter.question }}</p>
+
+            <div class="tiles tiles--2" data-choice-group style="margin-top:1.4rem">
+              {% for option in parameter.options %}
+                <button type="button" class="tile {% if forloop.first %}is-selected{% endif %}" data-choice="{{ option }}">
+                  <span class="tile__title">{{ option }}</span>
+                </button>
+              {% endfor %}
+            </div>
+          </section>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="actions">
+    <a class="btn" href="{% url 'interview' %}?step=6">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-left"></use></svg> Back
+    </a>
+    <a class="btn btn--primary btn--lg" href="{% url 'documents' %}">
+      Continue <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+    </a>
+  </div>
+</div>
+{% endblock %}

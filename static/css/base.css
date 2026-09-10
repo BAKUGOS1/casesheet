@@ -1,0 +1,233 @@
+/* ==========================================================================
+   CaseSheet — shared foundations
+   Design tokens, reset, and the components every surface reuses.
+   ========================================================================== */
+
+:root {
+  --green-900: #0b3a2a;
+  --green-800: #10553c;
+  --green-700: #16694a;
+  --green-500: #2a9d6e;
+  --green-200: #b9e0cd;
+  --green-100: #e4f2ea;
+  --green-050: #f2f8f5;
+
+  --saffron-700: #a75a0d;
+  --saffron-500: #d9822b;
+  --saffron-100: #fbeeda;
+
+  --red-700: #a01a1a;
+  --red-500: #d13b3b;
+  --red-100: #fbe6e6;
+
+  --amber-700: #8a5a06;
+  --amber-100: #fdf1d6;
+
+  --ink-900: #12211b;
+  --ink-700: #33443c;
+  --ink-500: #5d6c65;
+  --ink-300: #93a29a;
+
+  --line: #d8e2dc;
+  --line-strong: #b6c7bf;
+  --surface: #ffffff;
+  --surface-sunk: #f3f7f4;
+  --canvas: #eef3f0;
+
+  --focus: #0f62fe;
+
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+
+  --shadow-sm: 0 1px 2px rgba(11, 58, 42, .08), 0 1px 3px rgba(11, 58, 42, .06);
+  --shadow: 0 2px 6px rgba(11, 58, 42, .08), 0 12px 28px rgba(11, 58, 42, .09);
+
+  --font: "Segoe UI", system-ui, -apple-system, "Noto Sans", Roboto, Arial, sans-serif;
+}
+
+/* Text-size control on the kiosk scales every rem-based size at once. */
+html { font-size: 16px; }
+html[data-text="large"]  { font-size: 18.5px; }
+html[data-text="xlarge"] { font-size: 21px; }
+
+/* High-contrast mode for low-vision patients.
+   The greens are foreground colours far more often than backgrounds, so here
+   the whole green ramp becomes yellow-on-black and the few places that use a
+   green *fill* are overridden back to black beside their own component. */
+html[data-contrast="high"] {
+  --green-900: #ffd400;
+  --green-800: #ffd400;
+  --green-700: #ffd400;
+  --green-500: #ffd400;
+  --green-200: #ffd400;
+  --green-100: #1a1a1a;
+  --green-050: #101010;
+  --ink-900: #ffffff;
+  --ink-700: #f2f2f2;
+  --ink-500: #e0e0e0;
+  --ink-300: #c8c8c8;
+  --line: #ffffff;
+  --line-strong: #ffffff;
+  --surface: #000000;
+  --surface-sunk: #101010;
+  --canvas: #000000;
+  --saffron-700: #ffb84d;
+  --saffron-500: #ffb84d;
+  --saffron-100: #241d00;
+  --red-700: #ff8f8f;
+  --red-500: #ff6b6b;
+  --red-100: #2a0000;
+  --amber-700: #ffd400;
+  --amber-100: #241d00;
+  --shadow: none;
+  --shadow-sm: none;
+}
+html[data-contrast="high"] .btn--primary,
+html[data-contrast="high"] .brand__mark { background: #000000; }
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--ink-900);
+  background: var(--canvas);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { margin: 0; line-height: 1.2; font-weight: 650; letter-spacing: -.01em; }
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+table { border-collapse: collapse; width: 100%; }
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+html[data-contrast="high"] :focus-visible { outline-color: #ffd400; }
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 99;
+  background: var(--green-800); color: #fff; padding: .75rem 1.25rem;
+  border-radius: 0 0 var(--radius-sm) 0; text-decoration: none;
+}
+.skip-link:focus { left: 0; }
+
+/* --- icons ---------------------------------------------------------------- */
+
+.icon {
+  width: 1.5rem; height: 1.5rem; flex: none;
+  fill: none; stroke: currentColor; stroke-width: 1.7;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.icon--sm { width: 1.1rem; height: 1.1rem; stroke-width: 1.9; }
+.icon--lg { width: 2.4rem; height: 2.4rem; stroke-width: 1.5; }
+.icon--xl { width: 3.4rem; height: 3.4rem; stroke-width: 1.35; }
+
+/* --- brand lockup (kiosk header, clinician sidebar, portal header) --------- */
+
+.brand { display: flex; align-items: center; gap: .85rem; text-decoration: none; }
+.brand__mark {
+  display: grid; place-items: center;
+  width: 3rem; height: 3rem; flex: none; border-radius: 14px;
+  background: var(--green-800); color: #fff;
+}
+html[data-contrast="high"] .brand__mark { color: #ffd400; border: 1.5px solid #ffd400; }
+.brand__text { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.brand__text strong { font-size: 1.2rem; letter-spacing: -.02em; }
+.brand__text .muted { font-size: .78rem; }
+
+/* --- buttons -------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex; align-items: center; gap: .6rem;
+  padding: .7rem 1.15rem;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-900);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, transform .05s;
+}
+.btn:hover { border-color: var(--green-700); }
+.btn:active { transform: translateY(1px); }
+
+.btn--primary {
+  background: var(--green-800);
+  border-color: var(--green-800);
+  color: #fff;
+}
+html[data-contrast="high"] .btn--primary { color: #ffd400; border-color: #ffd400; }
+.btn--primary:hover { background: var(--green-700); border-color: var(--green-700); }
+
+.btn--danger { background: var(--red-700); border-color: var(--red-700); color: #fff; }
+.btn--quiet { background: transparent; border-color: transparent; color: var(--ink-700); }
+.btn--quiet:hover { background: var(--surface-sunk); }
+.btn--lg { padding: 1.05rem 1.9rem; font-size: 1.15rem; }
+.btn--block { width: 100%; justify-content: center; }
+
+/* --- surfaces ------------------------------------------------------------- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+.card__head {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+.card__body { padding: 1.25rem; }
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--ink-500);
+}
+
+/* --- badges --------------------------------------------------------------- */
+
+.badge {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .18rem .6rem;
+  border-radius: 999px;
+  font-size: .75rem; font-weight: 650;
+  background: var(--surface-sunk); color: var(--ink-700);
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+.badge--red { background: var(--red-100); color: var(--red-700); border-color: #f0c4c4; }
+.badge--amber { background: var(--amber-100); color: var(--amber-700); border-color: #f0dcae; }
+.badge--green { background: var(--green-100); color: var(--green-800); border-color: var(--green-200); }
+.badge--ai { background: var(--green-050); color: var(--green-700); border-color: var(--green-200); }
+html[data-contrast="high"] .badge { border-color: #fff; }
+
+.tags { display: flex; gap: .4rem; align-items: center; flex-wrap: wrap; }
+
+/* --- timeline (documents, patient record, portal) ------------------------- */
+
+.timeline { display: grid; }
+.timeline li { display: grid; grid-template-columns: 6rem 1fr; gap: 1rem; padding: .6rem 0; align-items: baseline; }
+.timeline li + li { border-top: 1px dashed var(--line); }
+.timeline__date { font-weight: 650; font-size: .86rem; color: var(--ink-500); }
+.timeline__label { font-weight: 600; }
+.timeline li.is-current .timeline__label { color: var(--green-800); }
+.timeline li.is-abnormal .timeline__label { color: var(--red-700); }
+
+/* --- misc ----------------------------------------------------------------- */
+
+.muted { color: var(--ink-500); }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}

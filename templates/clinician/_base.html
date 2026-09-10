@@ -1,0 +1,65 @@
+{% extends "base.html" %}{% load static %}
+
+{% block body_class %}workspace{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/clinician.css' %}">{% endblock %}
+
+{% block content %}
+<div class="console">
+  <aside class="console__side">
+    <a class="brand" href="{% url 'clinician_queue' %}">
+      <span class="brand__mark" aria-hidden="true">
+        <svg class="icon icon--lg"><use href="#i-stethoscope"></use></svg>
+      </span>
+      <span class="brand__text">
+        <strong>{{ product_name }}</strong>
+        <span class="muted">Clinician workspace</span>
+      </span>
+    </a>
+
+    <nav class="side-nav" aria-label="Sections">
+      <a href="{% url 'clinician_queue' %}" class="{% if active_nav == 'queue' %}is-active{% endif %}">
+        <svg class="icon icon--sm" aria-hidden="true"><use href="#i-users"></use></svg> OPD queue
+      </a>
+      <a href="{% url 'clinician_patient' %}">
+        <svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-text"></use></svg> History summaries
+      </a>
+      <a href="#">
+        <svg class="icon icon--sm" aria-hidden="true"><use href="#i-activity"></use></svg> Investigations
+      </a>
+      <a href="#">
+        <svg class="icon icon--sm" aria-hidden="true"><use href="#i-flag"></use></svg> Triage alerts
+      </a>
+      <a href="#">
+        <svg class="icon icon--sm" aria-hidden="true"><use href="#i-scan"></use></svg> Document inbox
+      </a>
+    </nav>
+
+    <p class="side-foot">
+      Connected to HIS · ABDM sandbox<br>
+      <a href="{% url 'welcome' %}">Back to the kiosk</a>
+    </p>
+  </aside>
+
+  <div class="console__main">
+    <header class="topbar">
+      <div>
+        <h1>{% block page_title %}{% endblock %}</h1>
+        <p class="topbar__meta">{% block page_meta %}{% endblock %}</p>
+      </div>
+      {% block topbar_tools %}{% endblock %}
+      <div class="who">
+        <span class="who__avatar">AS</span>
+        <span>
+          <strong style="display:block; font-size:.92rem">Dr. A. Sharma</strong>
+          <span class="topbar__meta">General Medicine · Room 12</span>
+        </span>
+      </div>
+    </header>
+
+    <div class="console__body">
+      {% block console %}{% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}

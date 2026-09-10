@@ -1,0 +1,45 @@
+{% extends "kiosk/_base.html" %}
+
+{% block title %}Review · {{ product_name }}{% endblock %}
+
+{% block content %}
+<div class="wrap wrap--narrow">
+  <div class="page-head">
+    <h1>Is this right?</h1>
+    <p class="page-head__hint">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-volume"></use></svg>
+      Read back to you. Fix anything wrong before it reaches your doctor.
+    </p>
+  </div>
+
+  <div class="summary">
+    {% for section in sections %}
+      <section class="sumsec">
+        <div class="sumsec__head">
+          <p class="sumsec__title">{{ section.title }}</p>
+          <div class="tags">
+            {% if section.alert %}<span class="badge badge--red">{{ section.alert }}</span>{% endif %}
+            <button type="button" class="btn btn--quiet" aria-label="Edit {{ section.title }}">
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-edit"></use></svg>
+            </button>
+          </div>
+        </div>
+        <div class="sumsec__body">
+          <ul class="sumsec__lines">
+            {% for line in section.lines %}<li><span>{{ line }}</span></li>{% endfor %}
+          </ul>
+        </div>
+      </section>
+    {% endfor %}
+  </div>
+
+  <div class="actions">
+    <a class="btn" href="{% url 'documents' %}">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-left"></use></svg> Back
+    </a>
+    <a class="btn btn--primary btn--lg" href="{% url 'done' %}">
+      <svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg> Yes, send it
+    </a>
+  </div>
+</div>
+{% endblock %}

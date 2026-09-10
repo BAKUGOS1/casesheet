@@ -1,0 +1,85 @@
+{% extends "kiosk/_base.html" %}
+
+{% block title %}Scan papers · {{ product_name }}{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="page-head">
+    <h1>Put your old papers on the tray</h1>
+    <p class="page-head__hint">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-camera"></use></svg>
+      One page at a time. Handwriting is read too.
+    </p>
+  </div>
+
+  <div class="pick">
+    <div>
+      <div class="scanner">
+        <div class="scanner__frame" aria-hidden="true"></div>
+        <div class="scanner__beam" aria-hidden="true"></div>
+        <p class="scanner__hint">Reading page 4</p>
+      </div>
+
+      <button type="button" class="btn btn--primary btn--block" style="margin-top:1rem">
+        <svg class="icon icon--sm" aria-hidden="true"><use href="#i-camera"></use></svg> Scan another page
+      </button>
+
+      <div class="card" style="margin-top:1.25rem">
+        <div class="card__head"><p style="font-weight:650">Your timeline</p></div>
+        <div class="card__body">
+          <ul class="timeline">
+            {% for entry in timeline %}
+              <li class="{% if entry.current %}is-current{% endif %} {% if entry.abnormal %}is-abnormal{% endif %}">
+                <span class="timeline__date">{{ entry.date }}</span>
+                <span class="timeline__label">{{ entry.label }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="eyebrow" style="margin-bottom:.8rem">{{ extracted_count }} of {{ documents|length }} pages read</p>
+
+      <ul class="doc-list">
+        {% for document in documents %}
+          <li class="doc {% if document.status == 'reading' %}doc--reading{% endif %}">
+            <span class="doc__icon"><svg class="icon" aria-hidden="true"><use href="#i-{{ document.icon }}"></use></svg></span>
+            <div>
+              <p class="doc__title">{{ document.title }}</p>
+              <p class="doc__meta">{{ document.source }} · {{ document.date }}</p>
+
+              {% if document.extracted %}
+                <dl class="doc__fields">
+                  {% for field in document.extracted %}
+                    <div class="doc__field {% if field.abnormal %}is-abnormal{% endif %}">
+                      <dt>{{ field.label }}</dt>
+                      <dd>{{ field.value }}</dd>
+                      {% if field.range %}<dd class="range">{{ field.range }}</dd>{% endif %}
+                    </div>
+                  {% endfor %}
+                </dl>
+              {% endif %}
+            </div>
+            {% if document.status == "extracted" %}
+              <span class="badge badge--green">{{ document.confidence }}%</span>
+            {% else %}
+              <span class="badge badge--amber">Reading</span>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="actions">
+    <a class="btn" href="{% url 'ayush' %}">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-left"></use></svg> Back
+    </a>
+    <a class="btn btn--primary btn--lg" href="{% url 'summary' %}">
+      Continue <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+    </a>
+  </div>
+</div>
+{% endblock %}

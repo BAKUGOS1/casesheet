@@ -1,0 +1,46 @@
+{% extends "kiosk/_base.html" %}
+
+{% block title %}Consent · {{ product_name }}{% endblock %}
+
+{% block content %}
+<div class="wrap wrap--narrow">
+  <div class="page-head">
+    <h1>What may we do?</h1>
+    <p class="page-head__hint">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-user"></use></svg>
+      {{ patient.name }} · {{ patient.age }} · {{ patient.sex }}
+    </p>
+  </div>
+
+  <ul class="consent-list">
+    {% for item in consent_items %}
+      <li class="consent-item {% if item.default_on %}is-on{% endif %}"
+          data-consent="{{ item.slug }}"
+          data-required="{{ item.required|yesno:'true,false' }}">
+        <span class="switch" role="switch"
+              aria-checked="{{ item.default_on|yesno:'true,false' }}"
+              aria-label="{{ item.title }}"></span>
+        <span>
+          <span class="consent-item__title">
+            {{ item.title }}
+            {% if item.required %}<span class="badge">Needed</span>{% endif %}
+          </span>
+          <span class="consent-item__plain">{{ item.plain }}</span>
+        </span>
+        <button type="button" class="consent-item__audio" aria-label="Explain {{ item.title }}">
+          <svg class="icon icon--sm" aria-hidden="true"><use href="#i-volume"></use></svg>
+        </button>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <div class="actions">
+    <a class="btn" href="{% url 'identify' %}">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-left"></use></svg> Back
+    </a>
+    <a class="btn btn--primary btn--lg" href="{% url 'complaint' %}">
+      I agree <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+    </a>
+  </div>
+</div>
+{% endblock %}

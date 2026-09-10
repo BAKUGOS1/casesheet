@@ -1,0 +1,123 @@
+{% extends "kiosk/_base.html" %}
+
+{% block title %}Your history · {{ product_name }}{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  {% if red_flag %}
+    <div class="redflag" role="alert">
+      <svg class="icon icon--lg" aria-hidden="true"><use href="#i-alert"></use></svg>
+      <div>
+        <strong>{{ red_flag.title }}</strong>
+        <p>{{ red_flag.detail }}</p>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="ask">
+    <section class="ask__question">
+      <div class="ask__probe">
+        <span class="badge badge--ai">{{ step.probe }}</span>
+        <div class="mode-switch" role="group" aria-label="Answer mode">
+          <a href="?step={{ step_number }}&amp;mode=voice" class="{% if mode == 'voice' %}is-active{% endif %}">
+            <svg class="icon icon--sm" aria-hidden="true"><use href="#i-mic"></use></svg> Speak
+          </a>
+          <a href="?step={{ step_number }}&amp;mode=touch" class="{% if mode == 'touch' %}is-active{% endif %}">
+            <svg class="icon icon--sm" aria-hidden="true"><use href="#i-hand"></use></svg> Tap
+          </a>
+        </div>
+      </div>
+
+      <p class="ask__q">{{ step.question }}</p>
+
+      {% if mode == "voice" %}
+        <div class="mic-zone">
+          <button type="button" class="mic" data-mic aria-label="Tap to speak your answer">
+            <svg class="icon icon--xl" aria-hidden="true"><use href="#i-mic"></use></svg>
+          </button>
+          <p class="mic-zone__label" data-mic-label>Listening</p>
+        </div>
+
+        <div class="transcript">
+          {% for line in step.transcript %}
+            <div class="bubble bubble--{{ line.who }}">{{ line.text }}</div>
+          {% endfor %}
+        </div>
+
+      {% elif step.kind == "scale" %}
+        <div class="scale" data-choice-group>
+          {% for point in step.scale %}
+            <button type="button" class="scale__item" data-choice="{{ point.label }}">
+              <span class="scale__face {{ point.face }}" aria-hidden="true"></span>
+              <span class="scale__value">{{ point.value }}</span>
+              <span class="scale__label">{{ point.label }}</span>
+            </button>
+          {% endfor %}
+        </div>
+
+      {% else %}
+        <div class="tiles tiles--2" data-choice-group
+             data-multi="{% if step.kind == 'multi' %}true{% else %}false{% endif %}">
+          {% for option in step.options %}
+            <button type="button" class="tile" data-choice="{{ option.label }}">
+              <span class="tile__icon"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-{{ option.icon }}"></use></svg></span>
+              <span class="tile__title">{{ option.label }}</span>
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="actions">
+        {% if previous_step %}
+          <a class="btn" href="?step={{ previous_step }}&amp;mode={{ mode }}">
+            <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-left"></use></svg> Back
+          </a>
+        {% else %}
+          <a class="btn" href="{% url 'complaint' %}">
+            <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-left"></use></svg> Back
+          </a>
+        {% endif %}
+        {% if next_step %}
+          <a class="btn btn--primary btn--lg" href="?step={{ next_step }}&amp;mode={{ mode }}">
+            Next <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+          </a>
+        {% else %}
+          <a class="btn btn--primary btn--lg" href="{% url 'ayush' %}">
+            Next <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+          </a>
+        {% endif %}
+      </div>
+    </section>
+
+    <aside class="ask__side">
+      <div class="card">
+        <div class="card__body">
+          <p class="eyebrow">Question {{ step_number }} of {{ step_total }}</p>
+          <div class="progressbar" style="margin-top:.6rem" role="progressbar"
+               aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">
+            <span style="width: {{ progress }}%"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card__body">
+          <p class="eyebrow">Recorded</p>
+          {% if captured %}
+            <ul class="captured" style="margin-top:.7rem">
+              {% for line in captured %}
+                <li>
+                  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-check"></use></svg>
+                  <span>{{ line }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="muted" style="margin-top:.5rem">Nothing yet.</p>
+          {% endif %}
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+{% endblock %}

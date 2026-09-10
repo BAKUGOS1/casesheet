@@ -1,0 +1,34 @@
+{% extends "kiosk/_base.html" %}
+
+{% block title %}Your token · {{ product_name }}{% endblock %}
+
+{% block content %}
+<div class="wrap wrap--narrow">
+  <div class="token-card">
+    <p class="eyebrow">Your token</p>
+    <p class="token-card__number">{{ token.number }}</p>
+    <p class="token-card__where">{{ token.department }}</p>
+    <p class="muted">{{ token.room }}</p>
+
+    {% if token.priority %}
+      <div class="priority-banner" role="alert">
+        <svg class="icon icon--lg" aria-hidden="true"><use href="#i-alert"></use></svg>
+        <span>You will be seen ahead of the queue</span>
+      </div>
+    {% endif %}
+
+    <p class="token-card__wait">{{ token.wait }}</p>
+  </div>
+
+  <p class="muted done-note">
+    Your history is already with the doctor and saved to ABHA {{ token.abha }}.
+  </p>
+
+  <div class="actions">
+    <a class="btn" href="{% url 'portal_dashboard' %}">My health record</a>
+    <a class="btn btn--primary btn--lg" href="{% url 'welcome' %}">
+      <svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg> Finish
+    </a>
+  </div>
+</div>
+{% endblock %}

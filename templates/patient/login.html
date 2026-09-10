@@ -1,0 +1,50 @@
+{% extends "base.html" %}{% load static %}
+
+{% block title %}Log in · {{ product_name }}{% endblock %}
+{% block body_class %}portal{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/clinician.css' %}">{% endblock %}
+
+{% block content %}
+<div class="login-shell">
+  <div class="login-card">
+    <div class="brand" style="margin-bottom:1.5rem">
+      <span class="brand__mark" aria-hidden="true">
+        <svg class="icon icon--lg"><use href="#i-user"></use></svg>
+      </span>
+      <span class="brand__text">
+        <strong>My health record</strong>
+        <span class="muted">{{ product_name }}</span>
+      </span>
+    </div>
+
+    <form method="get" action="{% url 'portal_dashboard' %}">
+      <div class="field">
+        <label for="abha">ABHA address or mobile number</label>
+        <input id="abha" name="abha" value="ramesh.kumar@abdm" autocomplete="username">
+      </div>
+
+      <div class="field">
+        <label for="otp1">One-time password</label>
+        <div class="otp">
+          <input id="otp1" inputmode="numeric" maxlength="1" value="4" aria-label="Digit 1">
+          <input inputmode="numeric" maxlength="1" value="7" aria-label="Digit 2">
+          <input inputmode="numeric" maxlength="1" value="2" aria-label="Digit 3">
+          <input inputmode="numeric" maxlength="1" value="9" aria-label="Digit 4">
+          <input inputmode="numeric" maxlength="1" aria-label="Digit 5">
+          <input inputmode="numeric" maxlength="1" aria-label="Digit 6">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn--primary btn--block btn--lg" style="margin-top:1.5rem">
+        Log in <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+      </button>
+    </form>
+
+    <div class="divider">or</div>
+
+    <button type="button" class="btn btn--block">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-fingerprint"></use></svg> Aadhaar fingerprint
+    </button>
+  </div>
+</div>
+{% endblock %}

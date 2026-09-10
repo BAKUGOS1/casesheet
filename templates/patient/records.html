@@ -1,0 +1,73 @@
+{% extends "patient/_base.html" %}
+
+{% block title %}My documents · {{ product_name }}{% endblock %}
+
+{% block content %}
+<div class="portal-wrap">
+  <div class="portal-title">
+    <div>
+      <h1>My documents</h1>
+      <p class="muted">Scanned at the kiosk and filed by date.</p>
+    </div>
+    <button type="button" class="btn btn--primary">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-download"></use></svg> Download all
+    </button>
+  </div>
+
+  <div class="portal-grid" style="grid-template-columns:1.8fr 1fr">
+    <section class="tablecard">
+      <div class="tablewrap">
+        <table class="qtable" style="min-width:28rem">
+          <thead>
+            <tr>
+              <th scope="col">Document</th>
+              <th scope="col">Type</th>
+              <th scope="col">Date</th>
+              <th scope="col"><span class="visually-hidden">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for record in records %}
+              <tr>
+                <td>
+                  <div class="pname">{{ record.title }}</div>
+                  {% if record.abnormal %}
+                    <div class="flagline">
+                      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-alert"></use></svg>
+                      Out of range
+                    </div>
+                  {% endif %}
+                </td>
+                <td><span class="badge">{{ record.kind }}</span></td>
+                <td style="white-space:nowrap">{{ record.date }}</td>
+                <td style="text-align:right; white-space:nowrap">
+                  <button type="button" class="btn btn--quiet">View</button>
+                  <button type="button" class="btn" aria-label="Download {{ record.title }}">
+                    <svg class="icon icon--sm" aria-hidden="true"><use href="#i-download"></use></svg>
+                  </button>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <aside>
+      <section class="side-card">
+        <div class="side-card__head"><span>Timeline</span></div>
+        <div class="side-card__body">
+          <ul class="timeline">
+            {% for entry in timeline %}
+              <li class="{% if entry.current %}is-current{% endif %} {% if entry.abnormal %}is-abnormal{% endif %}">
+                <span class="timeline__date">{{ entry.date }}</span>
+                <span class="timeline__label">{{ entry.label }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </section>
+    </aside>
+  </div>
+</div>
+{% endblock %}

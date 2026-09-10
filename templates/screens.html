@@ -1,0 +1,32 @@
+{% extends "base.html" %}{% load static %}
+
+{% block title %}All screens · {{ product_name }}{% endblock %}
+{% block body_class %}portal{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/clinician.css' %}">{% endblock %}
+
+{% block content %}
+<div class="index-wrap">
+  <p class="eyebrow">SIH26047 · Patient case-taking software</p>
+  <h1 style="font-size:2rem; margin-top:.4rem">{{ product_name }}</h1>
+  <p class="muted" style="margin-top:.6rem; max-width:54ch">
+    Front end only: Django templates, Django static files, plain CSS. No database, no services.
+  </p>
+
+  {% for group in groups %}
+    <section class="index-group">
+      <h2 style="font-size:1.1rem">{{ group.title }}</h2>
+      <div class="index-list">
+        {% for screen in group.screens %}
+          <a class="index-item" href="{% url screen.url %}">
+            <strong>
+              {{ screen.name }}
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+            </strong>
+            <span>{{ screen.desc }}</span>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  {% endfor %}
+</div>
+{% endblock %}

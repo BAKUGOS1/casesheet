@@ -1,0 +1,18 @@
+{% comment %}Kiosk progress rail: where the patient is in the seven-step intake.{% endcomment %}
+<nav class="rail" aria-label="Intake progress">
+  <ol class="rail__list">
+    {% for item in flow %}
+      <li class="rail__item is-{{ item.state }}">
+        <a href="{% url item.url %}">
+          <span class="rail__dot" aria-hidden="true">
+            {% if item.state == "done" %}
+              <svg class="icon icon--sm"><use href="#i-check"></use></svg>
+            {% else %}{{ item.number }}{% endif %}
+          </span>
+          <span class="rail__label">{{ item.label }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ol>
+  <p class="rail__count">Step {{ flow_position }} of {{ flow_total }}</p>
+</nav>

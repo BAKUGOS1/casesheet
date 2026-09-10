@@ -1,0 +1,36 @@
+{% extends "kiosk/_base.html" %}
+
+{% block title %}Identify · {{ product_name }}{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="page-head">
+    <h1>Who are you?</h1>
+    <p class="page-head__hint">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-volume"></use></svg>
+      Each option is read aloud. Touch one.
+    </p>
+  </div>
+
+  <div class="tiles tiles--2" data-choice-group>
+    {% for method in methods %}
+      <button type="button" class="tile {% if forloop.first %}is-selected{% endif %}" data-choice="{{ method.title }}">
+        <span class="tile__icon"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-{{ method.icon }}"></use></svg></span>
+        <span>
+          <span class="tile__title">{{ method.title }}</span>
+          <span class="tile__sub">{{ method.subtitle }}</span>
+        </span>
+      </button>
+    {% endfor %}
+  </div>
+
+  <div class="actions">
+    <a class="btn" href="{% url 'welcome' %}">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-left"></use></svg> Back
+    </a>
+    <a class="btn btn--primary btn--lg" href="{% url 'consent' %}">
+      Continue <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+    </a>
+  </div>
+</div>
+{% endblock %}

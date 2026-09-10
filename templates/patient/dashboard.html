@@ -1,0 +1,79 @@
+{% extends "patient/_base.html" %}
+
+{% block title %}My record · {{ product_name }}{% endblock %}
+
+{% block content %}
+<div class="portal-wrap">
+  <div class="portal-title">
+    <div>
+      <h1>My health record</h1>
+      <p class="muted">{{ patient.name }} · {{ patient.age }} · ABHA {{ patient.abha }}</p>
+    </div>
+    <a class="btn btn--primary" href="{% url 'portal_records' %}">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-download"></use></svg> Download
+    </a>
+  </div>
+
+  <div class="portal-grid">
+    <section class="side-card">
+      <div class="side-card__head"><span>Visits</span></div>
+      <div class="side-card__body">
+        {% for visit in visits %}
+          <div class="visit {% if visit.current %}is-current{% endif %}">
+            <span class="visit__date">{{ visit.date }}</span>
+            <div>
+              <p class="visit__place">{{ visit.place }}</p>
+              <p class="visit__summary">{{ visit.summary }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <aside>
+      <section class="side-card">
+        <div class="side-card__head"><span>Medicines</span></div>
+        <div class="side-card__body">
+          {% for medication in medications %}
+            <div class="minidoc">
+              <span class="minidoc__icon"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-pill"></use></svg></span>
+              <div>
+                <p class="minidoc__title">{{ medication.name }}</p>
+                <p class="minidoc__meta">{{ medication.freq }}</p>
+              </div>
+            </div>
+          {% endfor %}
+          <p class="badge badge--red" style="margin-top:.8rem">Never take: sulphonamides</p>
+        </div>
+      </section>
+
+      <section class="side-card">
+        <div class="side-card__head">
+          <span>Documents</span>
+          <a class="badge" href="{% url 'portal_records' %}">See all</a>
+        </div>
+        <div class="side-card__body">
+          {% for record in records|slice:":4" %}
+            <div class="minidoc">
+              <span class="minidoc__icon"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file-text"></use></svg></span>
+              <div style="flex:1">
+                <p class="minidoc__title">{{ record.title }}</p>
+                <p class="minidoc__meta">{{ record.date }}</p>
+              </div>
+              {% if record.abnormal %}<span class="badge badge--red">Check</span>{% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="side-card">
+        <div class="side-card__head"><span>Consent</span></div>
+        <div class="side-card__body">
+          <p class="muted">Dr. A. Sharma can see this record today.</p>
+          <button type="button" class="btn btn--block" style="margin-top:.9rem">Manage</button>
+        </div>
+      </section>
+    </aside>
+  </div>
+</div>
+{% endblock %}

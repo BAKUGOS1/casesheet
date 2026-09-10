@@ -1,0 +1,19 @@
+{% comment %}Accessibility controls: always visible, always in the same place.{% endcomment %}
+<div class="a11y" role="group" aria-label="Accessibility controls">
+  <button type="button" class="a11y__tool" data-toggle-audio aria-pressed="true">
+    <svg class="icon icon--sm" aria-hidden="true"><use href="#i-volume"></use></svg>
+    <span data-audio-label>Audio on</span>
+  </button>
+  <button type="button" class="a11y__tool" data-toggle-text>
+    <svg class="icon icon--sm" aria-hidden="true"><use href="#i-text-size"></use></svg>
+    <span data-text-label>Text size</span>
+  </button>
+  <button type="button" class="a11y__tool" data-toggle-contrast aria-pressed="false">
+    <svg class="icon icon--sm" aria-hidden="true"><use href="#i-contrast"></use></svg>
+    <span>High contrast</span>
+  </button>
+  <button type="button" class="a11y__tool a11y__tool--help">
+    <svg class="icon icon--sm" aria-hidden="true"><use href="#i-users"></use></svg>
+    <span>Call a helper</span>
+  </button>
+</div>
